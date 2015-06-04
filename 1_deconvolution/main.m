@@ -1,0 +1,3 @@
+DC1_cont_data_comp;
+DC2_discretedata_comp;
+DC3_naive_plot;
