@@ -37,10 +37,6 @@ Af = zeros(size(xx));
 for iii = 1:Nxx
    targ = DC_target(xx(iii)-xxp);
    Af(iii) = Dxxp*trapz(psf.*targ);
-   % Monitor the run
-%    if mod(iii,100)==0
-%        disp([iii Nxx]);
-%    end
 end
 
 % Save results to file

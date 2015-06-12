@@ -9,13 +9,13 @@
 % Jennifer Mueller and Samuli Siltanen, October 2012
 
 % Construct discretization points
-n  = 64;
+n  = 128;
 x  = [0:(n-1)]/n;
 Dx = x(2)-x(1);
 
 % Choose two noise levels. We compute three kinds of data: no added noise,
 % and noisy data with noise amplitude given by sigma
-sigma = 0.3;
+sigma = 0.1;
 
 % Load precomputed results
 load DC_cont_data xx Af a Ca psf xxp
