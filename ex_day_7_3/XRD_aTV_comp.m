@@ -79,7 +79,8 @@ while (its  < MAXITER)
     obj(its+1) = OFf;
     format short e
     % Monitor the run
-    disp(['Iteration ', num2str(its,'%4d'),', objective function value ',num2str(obj(its),'%.3e')])
+    disp(['Iteration ', num2str(its,'%4d'),...
+        ', objective function value ',num2str(obj(its),'%.3e')])
 end   % Iteration while-loop
 recn = fnew;
 
