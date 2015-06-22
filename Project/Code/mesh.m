@@ -14,9 +14,11 @@ classdef mesh < handle
     methods
         % Plot
         function plot(s)
-            trimesh(s.tris, s.points(:,1), s.points(:,2), ones(s.NP,1));
+            trisurf(s.tris, s.points(:,1), s.points(:,2), ones(s.NP,1), s.intensity);
+            hold on;
+            trimesh(s.tris, s.points(:,1), s.points(:,2));
             title('Triangle mesh');xlabel('x');ylabel('y');view(0, 90);
-            
+            colormap(flipud(gray));
         end
         
         % Load data
@@ -27,9 +29,8 @@ classdef mesh < handle
             s.NT = size(2);
             s.points = fscanf(fID, '%f %f', [2 s.NP])';
             s.tris = fscanf(fID, '%d %d %d', [3 s.NT])';
+            s.intensity = (fscanf(fID, '%d', [1 s.NT])');
             fclose(fID);
-            
-            s.intensity = zeros(s.NT, 1);
         end
     end
     
