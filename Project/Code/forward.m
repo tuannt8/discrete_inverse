@@ -1,6 +1,5 @@
 function [ F ] = forward( m,  theta, s_num)
 %FORWARD Forward model of tomography
-%
 %   m = mesh: the mesh
 %   theta = R1: angle
 %   s_num: size of measurement

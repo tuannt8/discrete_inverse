@@ -24,7 +24,7 @@ end
     A = zeros(nb_measure , length(m.tris));
     
     for i = 1:length(theta)
-        disp(['theta = ' num2str(theta(i))]);
+        disp(['theta = ' num2str(i)]);
         for j  = 1:length(s)
             % Measure on s(j), theta(i)
             idx = (i-1)*s_num + j;

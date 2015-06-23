@@ -9,16 +9,12 @@ classdef mesh < handle
         NT;         % Number of triangle
         tris;       % [3, NT]
         intensity;  % [1, NT]
-        hash = spatial_hash;
+        
         % Temp for computation
         center;
     end
     
     methods
-        %%
-        function obj = mesh()
-            disp('New mesh created');
-        end
         %% Plot
         function plot_edge(s)
             trimesh(s.tris', s.points(1,:), s.points(2,:));
@@ -60,14 +56,13 @@ classdef mesh < handle
             
             [ld, ru] = s.get_corner;
             s.center = (ld + ru)/2;
-            
-            s.hash.init(s);
         end
         
         %% Intersection
         function overlap = intersect(s, pt, p_norm, tIdx)
             
             % Test intersection first
+            
             
             inter_P = zeros(2,3);
             idx = 1;
@@ -102,27 +97,6 @@ classdef mesh < handle
             
         end
         
-        %% intersection
-        function tri_list = hash_intersect(s, pt, p_norm)
-            box_list = zeros(2, 1000);
-            idx = 1;
-            for ix = 1:s.hash.dim
-                for iy = 1:s.hash.dim
-                    [ld_b, ru_b] = s.hash.get_spartial_box(ix, iy);
-                    if (ray_box_over_lap(ld_b, ru_b, pt, p_norm))
-                        box_list(:,idx) = [ix;iy];
-                        idx = idx + 1;
-                    end
-                end
-            end
-            
-            tri_list = [];
-            for i = 1:idx-1
-                tri_list = [tri_list s.hash.contain{...
-                                            box_list(1,i), box_list(2,i)}];
-            end
-        end
-        
         %% Projection
         % Integration over an line
         function f = project(s, dis, theta)
@@ -135,12 +109,9 @@ classdef mesh < handle
             pt = s.center + s_direct*dis;
             
             f = 0;
-            tris_list = s.hash_intersect(pt, s_direct);
-            
-            for i = 1:length(tris_list)
-                idx = tris_list(i);
-                overLap = s.intersect(pt, s_direct, idx);
-                f = f + overLap*s.intensity(idx);
+            for i = 1:length(s.tris)
+                overLap = s.intersect(pt, s_direct, i);
+                f = f + overLap*s.intensity(i);
             end
         end
         
