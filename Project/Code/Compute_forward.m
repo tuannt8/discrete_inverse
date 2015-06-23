@@ -31,6 +31,6 @@ imagesc(F_n_crime);
 title('Measure with NO inverse crime');colormap(gray);axis image;
 
 subplot(1,3,3);
-imagesc(F_n_crime - F_crime);
+imagesc(abs(F_n_crime - F_crime));
 title('Difference');colormap(gray);axis image;
 

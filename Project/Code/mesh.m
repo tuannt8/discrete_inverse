@@ -51,7 +51,7 @@ classdef mesh < handle
             s.NT = size(2);
             s.points = fscanf(fID, '%f %f', [2 s.NP]);
             s.tris = fscanf(fID, '%d %d %d', [3 s.NT]);
-            s.intensity = (fscanf(fID, '%d', [1 s.NT]));
+            s.intensity = (fscanf(fID, '%f', [1 s.NT]));
             fclose(fID);
             
             [ld, ru] = s.get_corner;

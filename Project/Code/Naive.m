@@ -8,10 +8,19 @@ m_nc = reshape(F_n_crime, nb_el, 1);
 
 noise_lvl = 0.05;
 m_cn = m_c + randn(size(m_c))*noise_lvl*max(abs(m_c));
+%% Noise, no crime
+m_nc_n = m_nc + randn(size(m_nc))*noise_lvl*max(abs(m_nc));
+inten_nc_n = A\m_nc_n;
 
+figure(1);
 
-%% Noise, crime
+subplot(1,2,1);
+m_mesh.plot_face;
+title('Original object'); colormap(gray);axis image;
 
+subplot(1,2,2);
+m_mesh.plot_with_intensity(inten_nc_n);
+title('Naive with noise, WITHOUT inverse crime');colormap(gray);axis image;
 
 %% No noise, no crime
 inten_nc = A\m_nc;
