@@ -76,28 +76,28 @@ orig      = orig(:,1:row);
 final     = reshape(xnew,row,col);
 m         = reshape(m,row,col);
 
-% figure(1)
-% clf
-% hold on
-% plot(obj,'*-')
-% 
-% 
-% figure(2)
-% clf
-% 
-% imagesc([m,final,orig])
-% colormap gray
-% axis equal
-% axis off
-% title(['Deblurring with beta=', num2str(beta),' and regparam=',...
-%     num2str(regparam),' and PSF radius ',num2str(nPSF), ...
-%     '. Left:data. Middle: reconstruction. Right: original.'])
-% 
-% 
-% figure(3)
-% clf
-% imagesc(final);
-% colormap gray
-% axis equal
-% axis off
+figure(1)
+clf
+hold on
+plot(obj,'*-')
+
+
+figure(2)
+clf
+
+imagesc([m,final,orig])
+colormap gray
+axis equal
+axis off
+title(['Deblurring with beta=', num2str(beta),' and regparam=',...
+    num2str(regparam),' and PSF radius ',num2str(nPSF), ...
+    '. Left:data. Middle: reconstruction. Right: original.'])
+
+
+figure(3)
+clf
+imagesc(final);
+colormap gray
+axis equal
+axis off
 

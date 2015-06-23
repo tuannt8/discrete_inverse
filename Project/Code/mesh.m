@@ -9,6 +9,10 @@ classdef mesh < handle
         NT;         % Number of triangle
         tris;       % [3, NT]
         intensity;  % [1, NT]
+        NE;         % number of edge
+        edge;       % [2, NE]
+        tri_e_adjacent; % [2, NE]
+        e_on_tri;
         
         % Temp for computation
         center;
@@ -42,6 +46,33 @@ classdef mesh < handle
             end
             hold off;
         end
+        %% Gradient
+        % x is the current intensity
+        function gdx = gradient_length(s, x, beta)
+            gdx = zeros(s.NT, 1);
+            for i = 1:s.NT
+                edges = s.e_on_tri(:,i);
+                xi = x(i);
+                for j = 1:3
+                    eIdx = edges(j);
+                    
+                    triIdx = s.tri_e_adjacent(:, eIdx);
+                    otherIdx = triIdx(1);
+                    if otherIdx == i
+                        otherIdx = triIdx(2);
+                    end
+                    x_other = 0;
+                    if otherIdx > 0
+                        x_other = x(otherIdx);
+                    end
+                    pts = s.points(:,s.edge(:,eIdx));
+                    l = length2(pts(:,1)-pts(:,2));
+                    gdx(i) = gdx(i) + ...
+                        l*(xi - x_other)/sqrt((xi - x_other)^2 + beta);
+                end
+            end
+            
+        end
         
         %% Load data
         function load(s, filename)
@@ -52,11 +83,37 @@ classdef mesh < handle
             s.points = fscanf(fID, '%f %f', [2 s.NP]);
             s.tris = fscanf(fID, '%d %d %d', [3 s.NT]);
             s.intensity = (fscanf(fID, '%f', [1 s.NT]));
-            fclose(fID);
             
             [ld, ru] = s.get_corner;
             s.center = (ld + ru)/2;
+            
+            % edge
+            s.NE = fscanf(fID, '%d', 1);
+            ee = fscanf(fID, '%d %d %d %d', [4 s.NE]);
+            ee = ee+1;
+            s.edge = ee([1 2], :);
+            s.tri_e_adjacent = ee([3 4], :);
+            
+            % edge on tri
+            s.e_on_tri = zeros(3,s.NT);
+            idx = ones(s.NT,1);
+            for i = 1:s.NE
+                tri_a = s.tri_e_adjacent(:,i);
+                t1 = tri_a(1);
+                t2 = tri_a(2);
+                if t1 > 0
+                    s.e_on_tri(idx(t1), t1) = i;
+                    idx(t1) = idx(t1) + 1;
+                end
+                if t2 > 0
+                    s.e_on_tri(idx(t2), t2) = i;
+                    idx(t2) = idx(t2) + 1;
+                end
+            end
+            
+            fclose(fID);
         end
+        
         
         %% Intersection
         function overlap = intersect(s, pt, p_norm, tIdx)

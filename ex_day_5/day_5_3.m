@@ -5,8 +5,8 @@ addpath('TV_file');
 %% Total variation
 global regparam;
 global plot_flag;
-regparam_a = logspace(-1, 3, 15);
-%regparam_a = [2.2];
+%regparam_a = logspace(-1, 3, 15);
+regparam_a = [2.2];
 
 plot_flag = 0;
 if(length(regparam_a) == 1) 
