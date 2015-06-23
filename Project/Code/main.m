@@ -4,19 +4,7 @@ clc;
 close all;
 
 m_mesh = mesh;
-m_mesh.load('Data/mesh.txt');
-
-%% 
-% figure(1);
-% m.plot_edge;
-% hold;
-% m.plot_face_idx;
-
-
-figure(2);
-m_mesh.plot_face;
-title('Triangle mesh');xlabel('x');ylabel('y');view(0, 90);
-colormap(flipud(gray));
+m_mesh.load('Data/alien.txt');
 
 %% Test intersection
 num_pt = 30;
@@ -32,7 +20,19 @@ A = build_A(m_mesh, theta, num_pt);
 nb_measure = num_pt * length(theta);
 m = reshape(F, nb_measure, 1);
 
-inten = A\m;
+inten = A\m
+
+%% 
+% figure(1);
+% m.plot_edge;
+% hold;
+% m.plot_face_idx;
+
+
+figure(2);
+m_mesh.plot_face;
+title('Triangle mesh');xlabel('x');ylabel('y');view(0, 90);
+colormap(flipud(gray));
 
 %%
 figure(3);
