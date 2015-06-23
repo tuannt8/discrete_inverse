@@ -3,34 +3,44 @@ clear;
 clc;
 close all;
 
-m = mesh;
-m.load('Data/mesh.txt');
+m_mesh = mesh;
+m_mesh.load('Data/mesh.txt');
 
-figure(1);
-m.plot_edge;
-hold;
-m.plot_face_idx;
+%% 
+% figure(1);
+% m.plot_edge;
+% hold;
+% m.plot_face_idx;
 
 
 figure(2);
-m.plot_face;
+m_mesh.plot_face;
 title('Triangle mesh');xlabel('x');ylabel('y');view(0, 90);
 colormap(flipud(gray));
 
 %% Test intersection
-direct = [1;1];
-direct = direct/length2(direct);
-theta = acos(dot(direct, [1; 0]))*180/pi;
-dis = -30;
+num_pt = 30;
+theta = 0:5:180;
 
-pt = m.center + direct*dis;
-norm = [direct(2); -direct(1)];
+%% Forward map
+F = forward(m_mesh, theta, num_pt);
 
-figure(2);
-hold on;
-plot_line(pt, pt + norm*400, 'ro-');
-plot_line(pt, pt - norm*400, 'ro-');
-xlim([0 700]);ylim([0 500]);
+%% A matrix
+A = build_A(m_mesh, theta, num_pt);
+
+%% Test
+nb_measure = num_pt * length(theta);
+m = reshape(F, nb_measure, 1);
+
+inten = A\m;
 
 %%
-ov = m.project(dis,theta)
+figure(3);
+m_mesh.plot_with_intensity(inten);
+title('Naive without noise');xlabel('x');ylabel('y');view(0, 90);
+colormap(flipud(gray));
+
+%%
+figure(4);
+imagesc(F);
+colormap gray;

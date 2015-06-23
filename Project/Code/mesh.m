@@ -18,11 +18,19 @@ classdef mesh < handle
         %% Plot
         function plot_edge(s)
             trimesh(s.tris', s.points(1,:), s.points(2,:));
+            view(0, 90);
         end
         
         function plot_face(s)
             trisurf(s.tris', s.points(1,:), s.points(2,:),...
                     zeros(s.NP,1), s.intensity);
+            view(0, 90);
+        end
+        
+        function plot_with_intensity(s, inten)
+            trisurf(s.tris', s.points(1,:), s.points(2,:),...
+                    zeros(s.NP,1), inten);
+            view(0, 90);
         end
         
         function plot_face_idx(s)
@@ -52,6 +60,10 @@ classdef mesh < handle
         
         %% Intersection
         function overlap = intersect(s, pt, p_norm, tIdx)
+            
+            % Test intersection first
+            
+            
             inter_P = zeros(2,3);
             idx = 1;
             
@@ -61,7 +73,8 @@ classdef mesh < handle
                 [is_intersect, P] = line_seg_intersect(pt, p_norm,...
                                        pts(:,i), pts(:,mod(i+1, 3)+1));
                 if is_intersect == -1 % Line identical
-                    pts(1,i) = pts(1,i) + 0.01;
+                    disp('Line - ray identical. Vertex is displaced');
+                    pts(1,i) = pts(1,i) + 0.01; % Displace to avoid singular
                     [is_intersect, P] = line_seg_intersect(pt, p_norm,...
                                        pts(:,i), pts(:,mod(i+1, 3)+1));
                 end
@@ -97,9 +110,6 @@ classdef mesh < handle
             
             f = 0;
             for i = 1:length(s.tris)
-                if i == 53
-                
-                end
                 overLap = s.intersect(pt, s_direct, i);
                 f = f + overLap*s.intensity(i);
             end
