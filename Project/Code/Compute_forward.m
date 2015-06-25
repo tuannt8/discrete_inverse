@@ -7,7 +7,7 @@ m_mesh_higher = mesh;
 m_mesh_higher.load('Data/alien_2_higher.txt');
 
 %% Test intersection
-num_pt = 30;
+num_pt = 15;
 theta = 0:10:179;
 
 %% Forward map
